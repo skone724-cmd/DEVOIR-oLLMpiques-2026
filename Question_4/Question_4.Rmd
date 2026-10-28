@@ -1,0 +1,13 @@
+---
+---
+
+Une méthode à haut débit de détermination du sexe du cannabis peut être développée à partir des profils d’expression des gènes REM16 (LOC115699937) et FT1 (LOC115696989), identifiés comme marqueurs potentiels de différenciation sexuelle. La première étape consiste à collecter de jeunes feuilles sur un grand nombre de plantules avant l’apparition des caractères sexuels visibles. Les échantillons sont placés dans des plaques multicuvettes codées pour assurer leur traçabilité et faciliter leur traitement automatisé.
+L’ARN total est ensuite extrait de manière simultanée à l’aide de protocoles compatibles. Après contrôle de la qualité des échantillons, l’ARN est converti en ADN complémentaire (ADNc). L’expression de REM16 et FT1 est alors quantifiée par RT-qPCR à haut débit à l’aide d’amorces spécifiques et d’un gène de référence servant à normaliser les niveaux d’expression.
+Les analyses préliminaires réalisées, notamment l’extraction des données d’expression de REM16 et FT1 ainsi que la production de boxplots selon le sexe, permettent d’identifier des seuils d’expression discriminants entre individus mâles et femelles. Une approche combinée utilisant simultanément les deux marqueurs est recommandée afin d’améliorer la robustesse et la précision de la classification. Un indice basé sur les niveaux relatifs d’expression de REM16 et FT1 peut être calculé automatiquement pour chaque échantillon.
+Dans un contexte à haut débit, l’intégration d’un système robotisé de pipetage, de plaques multipuits et d’un pipeline bioinformatique automatisé permettrait d’analyser plusieurs échantillons, fournissant une méthode rapide, reproductible et adaptée aux programmes de sélection du cannabis.
+
+
+```{r}
+system("wc -w Question_4.Rmd")
+```
+

@@ -1,0 +1,128 @@
+---
+title: "Question_3/"
+output: html_document
+date: "2026-10-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# 1. Importer les données en spécifiant le chemin du dossier contenant le fichier 2_Data_RNASeq_Cannabis_Sex.csv et voir leur aperçu
+expr <- read.csv("../2_Data_RNASeq_Cannabis_Sex.csv", row.names = 1)
+
+View(expr)
+```
+
+```{r}
+# 2. Definir les ID des genes pour REM16 et FT1
+rem16_ID <- grep("LOC115699937", rownames(expr), value = TRUE)
+FT1_ID   <- grep("LOC115696989", rownames(expr), value = TRUE)
+```
+
+```{r}
+#3.Extraire les gènes ciblés et les transposer (échantillons en ligne et gènes en colonnes)
+selected_genes <- expr[c(rem16_ID, FT1_ID), ]
+df_genes <- as.data.frame(t(selected_genes))
+```
+
+```{r}
+#4. Renommer les colonnes pour plus de clarté
+colnames(df_genes) <- c("REM16", "FT1")
+```
+
+```{r}
+# 4. Ajouter une colonne pour les échantillons
+df_genes$Sample <- rownames(df_genes)
+```
+
+```{r}
+# 5. Créer une colonne "sexe" en se basant sur la terminaison du nom de l'échantillon (_XX ou _XY)
+df_genes$Sexe <- ifelse(grepl("_XX$", df_genes$Sample), "Female", "Male")
+```
+
+```{r}
+#6. Ordonner à nouveau les colonnes: échantillons, Sexe, REM16, FT1
+df_genes <- df_genes[, c("Sample", "Sexe", "REM16", "FT1")]
+```
+
+```{r}
+#7. Visualisation des données
+head(df_genes)
+```
+
+```{r}
+#8. Enregistrer df_genes en spécifiant le chemin de son dossier d'enregistrement
+write.csv(
+  df_genes,
+  file = "../df_genes.csv",
+  row.names = FALSE,
+  na = ""
+)
+```
+
+```{r}
+#9. Boxplot de REM16
+library(ggplot2)
+p1 <- ggplot(df_genes, aes(x = Sexe, y = REM16, fill = Sexe)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.5) +
+  geom_jitter(aes(color = Sexe), width = 0.15, size = 2, alpha = 0.8) +
+  labs(
+    title = "REM16 expression by sex",
+    x = "Sex",
+    y = "REM16 expression"
+  ) +
+  theme_classic() +
+  theme(legend.position = "none")
+
+print(p1)
+```
+
+
+```{r}
+#10. Boxplot de FT1
+
+p2 <- ggplot(df_genes, aes(x = Sexe, y = FT1, fill = Sexe)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.5) +
+  geom_jitter(aes(color = Sexe), width = 0.15, size = 2, alpha = 0.8) +
+  labs(
+    title = "FT1 expression by sex",
+    x = "Sex",
+    y = "FT1 expression"
+  ) +
+  theme_classic() +
+  theme(legend.position = "none")
+
+print(p2)
+```
+
+
+```{r}
+#11. Boxplot de Rem16 et FT1 côte à côte
+
+library(tidyr)
+
+df_long <- pivot_longer(
+  df_genes,
+  cols = c(REM16, FT1),
+  names_to = "Gene",
+  values_to = "Expression"
+)
+
+ggplot(df_long, aes(x = Sexe, y = Expression, fill = Sexe)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.5) +
+  geom_jitter(aes(color = Sexe), width = 0.15, size = 2, alpha = 0.8) +
+  facet_wrap(~ Gene, scales = "free_y") +
+  labs(
+    x = "Sex",
+    y = "Expression level",
+    title = "REM16 and FT1 expression by sex"
+  ) +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+
+
+
